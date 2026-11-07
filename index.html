@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3ecdf">
+  <title>まんまる精度ゲーム</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <p class="notice">いまの記録は、この端末のブラウザの中だけに保存されます。公開はしていません。</p>
+
+    <section id="screen-start" class="screen">
+      <header class="title-block">
+        <p class="eyebrow">中心の点を、どれだけ正確に囲めるか</p>
+        <h1>まんまる精度ゲーム</h1>
+        <p class="lead">一筆でなくていい。つないで描いても、離して続きを描いても、同じ形として採点します。<br>離すたびに精度が出ます。</p>
+      </header>
+
+      <form id="start-form" class="card">
+        <label class="field-label" for="player-name">名前</label>
+        <div class="combo" id="name-combo">
+          <input id="player-name" name="player-name" type="text" maxlength="16" autocomplete="off" placeholder="なまえを入力" required>
+          <button type="button" id="name-open" aria-expanded="false" aria-controls="name-menu">履歴</button>
+          <ul id="name-menu" class="name-menu" role="listbox" hidden></ul>
+        </div>
+        <p id="name-error" class="field-error" hidden>名前を入力してください</p>
+
+        <p class="field-label" id="shape-label">形</p>
+        <div class="shape-row" role="radiogroup" aria-labelledby="shape-label">
+          <button type="button" class="shape-btn is-selected" data-shape="circle" aria-pressed="true">まる</button>
+          <button type="button" class="shape-btn" data-shape="triangle" aria-pressed="false">さんかく</button>
+          <button type="button" class="shape-btn" data-shape="square" aria-pressed="false">しかく</button>
+          <button type="button" class="shape-btn" data-shape="star" aria-pressed="false">ほし</button>
+          <button type="button" class="shape-btn" data-shape="heart" aria-pressed="false">はーと</button>
+        </div>
+
+        <fieldset class="save-mode">
+          <legend>記録の保存先</legend>
+          <label class="radio">
+            <input type="radio" name="save-mode" value="local" checked>
+            <span>この端末に保存</span>
+          </label>
+          <label class="radio is-disabled">
+            <input type="radio" name="save-mode" value="public" disabled>
+            <span>公開ランキング（未公開）</span>
+          </label>
+        </fieldset>
+
+        <button type="submit" class="primary" id="start-btn">描きはじめる</button>
+        <button type="button" class="text-btn" id="open-history">記録を見る</button>
+      </form>
+    </section>
+
+    <section id="screen-play" class="screen" hidden>
+      <div class="play-layout">
+        <div class="stage-wrap">
+          <div class="stage-bar">
+            <p class="stage-shape" id="play-shape">まる</p>
+            <p class="stage-player" id="play-player"></p>
+          </div>
+          <canvas id="board" width="720" height="720" aria-label="描画キャンバス"></canvas>
+          <p class="hint" id="play-hint">点を中心に、指やマウスで形を描いてください。</p>
+        </div>
+        <aside class="score-panel" id="score-panel" aria-live="polite">
+          <p class="percent" id="percent">—</p>
+          <p class="rank-name" id="rank-name"></p>
+          <p class="rank-comment" id="rank-comment">離すと、精度とランクが出ます。</p>
+          <p class="save-flash" id="save-flash" hidden>この端末に記録しました</p>
+          <div class="play-actions">
+            <button type="button" class="primary" id="save-btn" disabled>記録する</button>
+            <button type="button" class="secondary" id="retry-btn">描き直す</button>
+            <button type="button" class="text-btn" id="back-btn">開始に戻る</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="screen-history" class="screen" hidden>
+      <header class="title-block">
+        <p class="eyebrow">この端末のブラウザだけ</p>
+        <h1>記録</h1>
+      </header>
+      <div class="card history-card">
+        <div class="filter-row" id="history-filters" role="tablist" aria-label="図形で絞り込み"></div>
+        <ol id="history-list" class="history-list"></ol>
+        <div class="history-actions">
+          <button type="button" class="text-btn" id="history-back">開始に戻る</button>
+          <button type="button" class="danger" id="clear-btn">この端末の記録を消す</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/ranks.js"></script>
+  <script src="js/shapes.js"></script>
+  <script src="js/score.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
